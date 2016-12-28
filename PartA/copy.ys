@@ -1,0 +1,61 @@
+# Execution begin at address 0
+        .pos 0
+init:   irmovl Stack,%esp
+        irmovl Stack,%ebp
+        call Main
+        halt
+#Data Block
+        .align 4
+src:
+        .long 0x00a
+        .long 0x0b0
+        .long 0xc00
+dst:
+        .long 0x111
+        .long 0x222
+        .long 0x333
+
+Main:   pushl %ebp
+        rrmovl %esp,%ebp
+
+        #core
+        irmovl $3,%eax
+        pushl  %eax         #set parameter:len=3
+        irmovl dst,%ecx
+        pushl  %ecx         #set parameter:dst address
+        irmovl src,%edx
+        pushl %edx          #set parameter:src address
+        call Copy           #call Copy(src,dst,len)
+
+        rrmovl  %ebp,%esp
+        popl  %ebp
+        ret
+
+Copy:
+        pushl %ebp
+        rrmovl %esp,%ebp
+
+        #core
+        mrmovl 8(%ebp),%ebx   #ebx=src
+        mrmovl 12(%ebp),%ecx  #ecx=dst
+        mrmovl 16(%ebp),%edx  #edx=len
+        xorl  %eax,%eax       #result=0
+        andl  %edx,%edx       #set condition code
+        je    End
+
+Loop:   mrmovl (%ebx),%esi    #read data from src
+        rmmovl %esi,(%ecx)     #store data to dst
+        xorl   %esi,%eax      #result=result xor esi
+        irmovl $4,%esi        #set esi as 4
+        addl   %esi,%ebx      #src++
+        addl   %esi,%ecx      #dst++
+        irmovl $-1,%esi       #--len
+        addl %esi,%edx
+        jne  Loop
+
+End:    rrmovl  %ebp,%esp
+        popl  %ebp
+        ret
+
+        .pos 0x100
+Stack:
