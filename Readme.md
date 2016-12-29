@@ -13,7 +13,7 @@ ToolKit Download: wait for update
 **Code**
 - Part A [finished]
 - Part B [finished]
-- Part C [unfinished]
+- Part C [30%]
 
 **Document**
 - Part A [unfinished]
