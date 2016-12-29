@@ -4,12 +4,12 @@
 
 ## CPE History Table
 
-| CPE   | Hencement        |
-| ----- | ---------------- |
-| 16.44 | Original Version |
-| 13.96 | Use`iaddl`       |
-|       |                  |
-|       |                  |
-|       |                  |
-|       |                  |
+| CPE   | Hencement                                |
+| ----- | ---------------------------------------- |
+| 16.44 | Original Version                         |
+| 13.96 | Use`iaddl`                               |
+| 12.96 | Move `len--` to remove a data hazard in Loop |
+|       |                                          |
+|       |                                          |
+|       |                                          |
 
