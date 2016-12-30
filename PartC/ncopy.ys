@@ -23,19 +23,38 @@ ncopy:	pushl %ebp		# Save old frame pointer
 # You can modify this portion
         # Loop header
         xorl %eax,%eax          # count = 0;
-        andl %edx,%edx          # len <= 0?
-        jle Done                # if so, goto Done:
-Loop:   mrmovl (%ebx), %esi     # read val from src...
-				iaddl $-1, %edx         # len--
+				iaddl $-2,%edx					#if len>=2	jump to unrolled Loop(UnLoop)
+        jl Loop									#else jump to Loop
+
+UnLoop: mrmovl (%ebx), %esi     # read val from src...
+				iaddl $4, %ebx         	# src++
         rmmovl %esi, (%ecx)     # ...and store it to dst
+				iaddl $4, %ecx         	# dst++
+
+				mrmovl (%ebx), %edi     # read val from src...
+				iaddl $4, %ebx        	# src++
+				rmmovl %edi, (%ecx)     # ...and store it to dst
+				iaddl $4, %ecx         	# dst++
+
         andl %esi, %esi         # val <= 0?
+        jle Next                # if so, goto Npos:
+        iaddl $1, %eax         	# count++
+
+Next:		andl %edi, %edi         # val <= 0?
         jle Npos                # if so, goto Npos:
-        iaddl $1, %eax         # count++
-Npos:
-        iaddl $4, %ebx         # src++
-        iaddl $4, %ecx         # dst++
-        andl %edx,%edx          # len > 0?
-        jg Loop                 # if so, goto Loop:
+        iaddl $1, %eax       	  # count++
+
+Npos:   iaddl $-2,%edx         # len > 0?
+				jge UnLoop             # if so, goto Loop:
+
+Loop:   iaddl $2,%edx          # len <= 0?
+				je Done                # if so, goto Done:
+				mrmovl (%ebx), %esi     # read val from src...
+				rmmovl %esi, (%ecx)     # ...and store it to dst
+				andl %esi, %esi         # val <= 0?
+				jle Done                # if so, goto Done
+				iaddl $1, %eax        	# count++
+
 ##################################################################
 # Do not modify the following section of code
 # Function epilogue.

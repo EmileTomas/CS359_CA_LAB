@@ -9,7 +9,7 @@
 | 16.44 | Original Version                         |
 | 13.96 | Use`iaddl`                               |
 | 12.96 | Move `len--` to remove a data hazard in Loop |
-|       |                                          |
+| 11.04 | Unlooped the loop                        |
 |       |                                          |
 |       |                                          |
 
