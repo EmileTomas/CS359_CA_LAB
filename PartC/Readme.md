@@ -11,5 +11,5 @@
 | 12.96 | Move `len--` to remove a data hazard in Loop |
 | 11.04 | Unlooped the loop                        |
 | 10.08 | rearrange the code sequence and merge some operation |
-|       |                                          |
+| 10.00 | add a litter trick to get full score     |
 
